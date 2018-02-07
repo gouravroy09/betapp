@@ -1,6 +1,13 @@
 var db=require('../dbconnection');
 
 var Custom2 = {
+
+	getAllMatches:function(callback){
+
+		return db.query("Select * from match",callback);
+
+	},
+
 	getAllEmpTypes:function(callback){
 
 		return db.query("Select * from employee_type",callback);

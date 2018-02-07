@@ -7,275 +7,28 @@ var fs  = require('fs');
 const sql = require('mssql');
 
 
-api.get('/users2', function (req, res) {
-   
-    //var sql = require("mssql");
 
-    // config for your database
-    var config = {
-        user: 'emp_portal',
-        password: 'P0rt@l',
-        server: '10.10.91.81', 
-        //server: 'localhost', 
-        database: 'emp_portal' 
-    };
 
-    // connect to your database
-    sql.connect(config, function (err) {
+
+
+api.get('/matches',function(req,res,next){
     
-        if (err) console.log(err);
-
-        // create Request object
-        var request = new sql.Request();
-           
-        // query to the database and get the records
-        request.query('update Users set FullName="Admin-Admin" where Id=1', function (err, recordset) {
-            
-            if (err) console.log(err)
-
-            // send records as a response
-            res.send(recordset);
-            
-        });
-    });
-    sql.close();
-});
-
-api.get('/empTypes',function(req,res,next){
-    var config = {
-            user: 'emp_portal',
-            password: 'P0rt@l',
-            server: 'localhost', 
-            database: 'emp_portal' 
-        };
-    // connect to your database
-    sql.connect(config, function (err) {
-    
-        if (err) console.log(err);
-
-        // create Request object
-        var request = new sql.Request();
-           
-        // query to the database and get the records
-        request.query('select * from tblEmpType', function (err, recordset) {
-            
-            if (err) console.log(err);
-
-            // send records as a response
-            //var i=0;
-            //addEmpType(sql,res,recordset);
-            //for(i=0;i<recordset.length;i++){
-                /*if(i<recordset.length){
-
-                Custom2.addUser(recordset[i],function(err,count){
-
-                });
-                }*/
-            //}
-            //res.send(recordset);
-            
-        });
-    });
-
-    sql.close();
-    });
-
-function addEmpType(sql,res,recordset){
-    var query_string = "delete from employee_type;ALTER TABLE employee_type AUTO_INCREMENT = 1;";
-    query_string = query_string + "insert into employee_type(description) values ";
-
-    //if(i<recordset.recordset.length){
-       // console.log(recordset.recordset.length);
-        for(var i =0;i < recordset.recordset.length;i++){
-            var User = recordset.recordset[i];
-            query_string = query_string + "("+
-            stringify(User.EmpType)+"),";
-
-        }
-        query_string = query_string.slice(0,-1);
-       // query_string =query_string ;
-        console.log(query_string);
-    Custom2.addUser(query_string,function(err,count){
-        if (err) console.log(err);
-        res.send(recordset);
-        sql.close();
-        //addUser(res,i+1,recordset);
-    });
-    //}
-    //else {
-    //}
-}
-
-api.get('/grades',function(req,res,next){
-    var config = {
-            user: 'emp_portal',
-            password: 'P0rt@l',
-            server: 'localhost', 
-            database: 'emp_portal' 
-        };
-    // connect to your database
-    sql.connect(config, function (err) {
-    
-        if (err) console.log(err);
-
-        // create Request object
-        var request = new sql.Request();
-           
-        // query to the database and get the records
-        request.query('select * from tblGrades', function (err, recordset) {
-            
-            if (err) console.log(err);
-
-            // send records as a response
-            //var i=0;
-            addGrade(sql,res,recordset);
-            //for(i=0;i<recordset.length;i++){
-                /*if(i<recordset.length){
-
-                Custom2.addUser(recordset[i],function(err,count){
-
-                });
-                }*/
-            //}
-            //res.send(recordset);
-            
-        });
-    });
-
-    //sql.close();
-    });
-
-function addGrade(sql,res,recordset){
-    var query_string = "delete from employee_grade;ALTER TABLE employee_grade AUTO_INCREMENT = 1;"
-    query_string = query_string + "insert into employee_grade(description) values ";
-
-    //if(i<recordset.recordset.length){
-       // console.log(recordset.recordset.length);
-        for(var i =0;i < recordset.recordset.length;i++){
-            var User = recordset.recordset[i];
-            query_string = query_string + "("+
-            stringify(User.Grade)+"),";
-
-        }
-        query_string = query_string.slice(0,-1);
-       // query_string =query_string ;
-        console.log(query_string);
-    Custom2.addUser(query_string,function(err,count){
-        if (err) console.log(err);
-        res.send(recordset);
-        sql.close();
-        //addUser(res,i+1,recordset);
-    });
-    //}
-    //else {
-    //}
-}
-
-
-
-api.get('/users',function(req,res,next){
-    var config = {
-            user: 'emp_portal',
-            password: 'P0rt@l',
-            server: 'localhost', 
-            database: 'emp_portal' 
-        };
-    // connect to your database
-    sql.connect(config, function (err) {
-    
-        if (err) console.log(err);
-
-        // create Request object
-        var request = new sql.Request();
-
-           
-        // query to the database and get the records
-        request.query('select  tblGrades.Grade,UserName,FullName,EmailID,EmpNo,Doj,GradeCode,EmpType from Users left join tblGrades on Users.GradeCode=tblGrades.Id', function (err, recordset) {
-            
-            if (err) console.log(err);
-
-            // send records as a response
-            //var i=0;
-            addUser(sql,res,recordset);
-
-            console.log(recordset);
-            //for(i=0;i<recordset.length;i++){
-                /*if(i<recordset.length){
-
-                Custom2.addUser(recordset[i],function(err,count){
-
-                });
-                }*/
-            //}
-            res.end(JSON.stringify (recordset));
-            
-        });
-    });
-
-    //sql.close();
+        //else{
+            Custom2.getAllUsers(function(err,rows){
+                if(err){
+                    res.json(err);
+                }else{
+                    res.json(rows);
+                }
+            });
+        //}
     });
 
 
-function addUser(sql,res,recordset){
-
-    // var query_string = "insert into users(emp_grade_code,username,fullname,email_id,emp_no,doj,emp_grade_id,emp_type_id) "+
-    // "values(?,?,?,?,?,?,?,?)";
-    //     db.query(query_string,[req.body.GradeName,
-    //         req.body.UserName,reqbody.FullName,req.body.EmailID,req.body.EmpNo,req.body.Doj,req.body.GradeCode,req.body.EmpType],function(err){
-    //             if(err)
-    //             {
-    //                 res.end(error);
-    //             }
-    //             else
-    //             {
-    //                 res.end('success');
-    //             }
-    //         });
 
 
 
 
-
-    var query_string = "delete from users;ALTER TABLE users AUTO_INCREMENT = 1;"
-    query_string = query_string + "insert into users(emp_grade_code,username,fullname,email_id,emp_no,doj,emp_grade_id,emp_type_id) values";
-
-    //if(i<recordset.recordset.length){
-       // console.log(recordset.recordset.length);
-        for(var i =0;i < recordset.recordset.length;i++){
-            var User = recordset.recordset[i];
-            query_string = query_string + "("+
-            stringify(User.Grade) + "," + stringify(User.UserName)+","+stringify(User.FullName)+","+
-            stringify(User.EmailID)+","+stringify(User.EmpNo)+","+
-            stringify(User.Doj)+","+zeroGrade(User.GradeCode)+","+zeroGrade(User.EmpType)+"),";
-        }
-        query_string = query_string.slice(0,-1);
-       // query_string =query_string ;
-        console.log(query_string);
-    Custom2.addUser(query_string,function(err,count){
-        if (err) console.log(err);
-        res.send(recordset);
-        sql.close();
-        //addUser(res,i+1,recordset);
-    });
-    //}
-    //else {
-    //}
-}
-function zeroGrade(object){
-    if(object==null){
-        return 0;
-    }else{
-        return object;
-    }
-}
-
-function stringify(object){
-    if(object==null){
-        return "'its null'";
-    }else{
-        return "'"+object.toString()+"'";
-    }
-}
 
 api.get('/rest/:id?',function(req,res,next){
     if(req.params.id){
