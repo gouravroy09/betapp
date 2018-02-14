@@ -4,7 +4,7 @@ var Custom2 = {
 
 	getAllMatches:function(callback){
 
-		return db.query("Select * from match",callback);
+		return db.query("select * from matches",callback);
 
 	},
 

@@ -14,7 +14,7 @@ const sql = require('mssql');
 api.get('/matches',function(req,res,next){
     
         //else{
-            Custom2.getAllUsers(function(err,rows){
+            Custom2.getAllMatches(function(err,rows){
                 if(err){
                     res.json(err);
                 }else{
