@@ -11,18 +11,33 @@ const sql = require('mssql');
 
 
 
+// api.get('/matches',function(req,res,next){
+    
+//         //else{
+//             Custom2.getAllMatches(function(err,rows){
+//                 if(err){
+//                     res.json(err);
+//                 }else{
+//                     res.json(rows);
+//                 }
+//             });
+//         //}
+//     });
+
+
 api.get('/matches',function(req,res,next){
     
-        //else{
-            Custom2.getAllMatches(function(err,rows){
-                if(err){
-                    res.json(err);
-                }else{
-                    res.json(rows);
-                }
-            });
-        //}
+        
+    db.query(
+                                'select m.id as match_id,v.id as venue_id,time,team1 as team1_id,team2 as team2_id,v.description as venue_name,t1.description as team1_name,t2.description as team2_name from matches m inner join  venue v on m.venue=v.id inner join  team t1 on m.team1=t1.id inner join team t2 on  m.team2=t2.id ;',function(err,data){
+                                  //console.log('select email_id from users where id = ' +req.body.emp_id + ';');
+                                  if(err)
+                                    res.json(err);
+                                  res.json(data);
+                                });
     });
+
+
 
 
 
